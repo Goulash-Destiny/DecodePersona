@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecodePersona</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- BOTÃO NO TOPO DIREITO PARA CRIAR CÍRCULO -->
+    <button id="topAddCircleBtn" class="top-right-btn" title="Criar Novo Círculo Social">+</button>
+        <!-- BOTÃO NO TOPO DIREITO PARA CRIAR CÍRCULO -->
+
+    <!-- NOVO BOTÃO TEMPORÁRIO PARA DELETAR TUDO (Adicione esta linha aqui) -->
+    <button id="clearAllBtn" class="top-right-btn btn-delete-all" title="Limpar Todos os Círculos">🗑️</button>
+
+
+    <!-- 1.NOME DO CÍRCULO -->
+    <div id="circlePopup" class="popup-overlay"> <!-- essa div e um quadrado preto que cobre toda a tela (quando clica no botao) -->
+        <div class="popup-box"> <!-- Agora sim a caixa pequena do circulo social-->
+            <h3>Nome do Círculo Social</h3>
+            <input type="text" id="newCircleNameInput" placeholder="Ex: Escola, Trabalho...">
+            <div class="popup-buttons">
+                <button id="cancelCircleBtn" class="btn-cancel">Cancelar</button>
+                <button id="confirmCircleBtn" class="btn-confirm">Criar</button>
+            </div>
+        </div>
+    </div>
+
+       <!-- 2. SUBTELA GRANDE: CADASTRO COMPLETO DO PERFIL (Substitui a barra lateral) -->
+    <div id="personModal" class="popup-overlay"> <!-- ESSA EMBALAGEM VOLTOU: É ela que esconde e mostra a tela grande -->
+        <div class="modal-big-box">
+            <h2>Cadastrar Novo Perfil</h2>
+            <p class="modal-subtitle">Preencha as informações detalhadas da pessoa na rede.</p>
+            
+            <div class="modal-body">
+                
+                <!-- COLUNA 1: DADOS PESSOAIS -->
+                <div class="modal-col">
+                    <div class="form-group">
+
+                        <label>Nome do Perfil:</label>
+                        <input type="text" id="personName" placeholder="Ex: João Silva">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Idade:</label>
+                        <input type="text" id="personAge" placeholder="Ex: 25 anos">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Data de Nascimento:</label>
+                        <input type="text" id="personBirth" placeholder="Ex: 15/04/2001">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rede Social:</label>
+                        <input type="text" id="personSocial" placeholder="Ex: @Hugo890">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Moradia:</label>
+                        <input type="text" id="personAddress" placeholder="Ex: Av.Nova Friburgo L28 Q17">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Profissão:</label>
+                        <input type="text" id="personProfession" placeholder="Ex: Doctor">
+                    </div>
+                </div>
+
+                <!-- COLUNA 2: CLASSIFICAÇÕES E STATUS -->
+                <div class="modal-col">
+                    <!-- Categoria de Cores (Checkbox/Radio) -->
+                    <div class="form-group">
+                        <label>Classificação do Perfil:</label>
+                        <div class="radio-group horizontal-row">
+                            <label class="radio-option">
+                                <input type="radio" name="statusColor" value="#22ec3d" checked>
+                                <span class="custom-radio green-dots"></span>
+                                <span class="radio-label">Verde - Amigável</span>
+                            </label>
+                            
+                            <label class="radio-option">
+                                <input type="radio" name="statusColor" value="#ff9000">
+                                <span class="custom-radio orange-dots"></span>
+                                <span class="radio-label">Laranja - Hostil</span>
+                            </label>
+                            
+                            <label class="radio-option">
+                                <input type="radio" name="statusColor" value="#ff0000">
+                                <span class="custom-radio red-dots"></span>
+                                <span class="radio-label">Vermelho - Atenção</span>
+                            </label>
+                        </div>
+
+                        <label>Perfil Duplo:</label>
+                        <div class="radio-group horizontal-row">
+                            <label class="radio-option">
+                                <input type="radio" name="statusPerfilDuplo" value="Sim" checked>
+                                <span class="custom-radio grey-dots"></span>
+                                <span class="radio-label">Sim</span>
+                            </label>
+                            
+                            <label class="radio-option">
+                                <input type="radio" name="statusPerfilDuplo" value="Nao">
+                                <span class="custom-radio grey-dots"></span>
+                                <span class="radio-label">Não</span>
+                            </label>    
+                        </div>
+                    </div>
+
+                    <!-- Nova Categoria: Status no Grupo (Select/Dropdown) -->
+                    <div class="form-group">
+                        <label>Status no Grupo:</label>
+                        <select id="personStatus">
+                            <option value="Ativo">Ativo</option>
+                            <option value="Inativo">Inativo</option>
+                            <option value="Afastado">Afastado</option>
+                        </select>
+                    </div>
+                </div>
+
+            <div class="personalidade">
+                <label>Personalidade</label>
+                
+                <div class="form-group">
+                    <label>Traços Bons</label>
+                    <input type="text" id="personQualidades" placeholder="Ex: Carismático, Gentil...">
+                </div>
+
+                <div class="form-group">
+                    <label>Traços Ruins</label>
+                    <input type="text" id="personDefeitos" placeholder="Ex: Egoísta, Agressivo...">
+                </div>
+
+                <div class="form-group">
+                    <label>Tratamento ao Próximo</label>
+                    <input type="text" id="personTratamento" placeholder="Ex: Gentil, Exitante...">
+                </div>
+
+                <div class="form-group">
+                    <label>Sob Ataque</label>
+                    <input type="text" id="personSobAtaque" placeholder="Ex: Recua, defensivo...">
+                </div>
+
+                <div class="form-group">
+                    <label>Vulnerabilidade</label>
+                    <input type="text" id="personVulnerabilidade" placeholder="Ex: Rejeição, Culpa, Família...">
+                </div>
+
+                <div class="form-group">
+                    <label>Nível Empátia</label>
+                    <select id="personEmpatia">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nível Influência</label>
+                    <select id="personInfluencia">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Confiabilidade</label>
+                    <select id="personConfiabilidade">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Postura Comportamental</label>
+                    <select id="personPostura">
+                        <option value="dominante">Dominante</option>
+                        <option value="passivo">Passivo</option>
+                        <option value="neutro">Neutro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Motivação Central</label>
+                    <select id="personMotivacao">
+                        <option value="reconhecimento">Status/Reconhecimento</option>
+                        <option value="estabilidade">Segurança/Estabilidade</option>
+                        <option value="pertencimento">Pertencimento/Aceitação</option>
+                        <option value="autonomia">Controle/Autonomia</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="hardInformation">
+                <label>Hard Information</label>
+
+                <div class="form-group">
+                    <label>Traumas:</label>
+                    <input type= "text"  id= "personTraumas" placeholder="Ex: Constrangimento, gritos...">
+                </div>
+
+                <div class="form-group">
+                        <label>Inseguranças:</label>
+                        <input type="text" id="personInseguranca" placeholder="Ex: Aparência, Comportamento, Pessoa...">
+                </div>
+
+                <div class="form-group">
+                        <label>Minoria:</label>
+                        <input type="text" id="personMinoria" placeholder="Ex: Classe social, Dependente...">
+                </div>
+
+                <div class="form-group">
+                        <label>Ponto de Quebra:</label>
+                        <input type="text" id="personQuebra" placeholder="Ex: Frase, palavra, ação...">
+                </div>
+
+                <div class="form-group">
+                        <label>Dependência:</label>
+                        <input type="text" id="personDependencia" placeholder="Ex: Drogas, Pessoas, Alcool...">
+                </div>
+
+                <div class="form-group">
+                        <label>Segredos:</label>
+                        <input type="text" id="personSegredo" placeholder="Ex: Traição, Comportamento, Passado...">
+                    </div>
+
+                <div class="form-group">
+                        <label>Obsessão:</label>
+                        <input type="text" id="personObsessao" placeholder="Ex: Dinheiro, Aparência, Religião...">
+                </div>
+
+            </div>
+
+            </div> <!-- Fim da modal-body -->
+
+
+
+            <!-- BOTÕES DE CONTROLE NO PÉ DA TELA -->
+            <div class="modal-footer">
+                <button id="backPersonBtn" class="btn-cancel">Voltar</button>
+                <button id="addPersonBtn" class="btn-confirm">Salvar Perfil</button>
+            </div>
+            
+        </div> <!-- Fim da modal-big-box -->
+    </div> <!-- Fim do personModal -->
+
+    <div id="personView" style="display: none;">
+
+        <div id ="amigavel" class="amigavel">
+            <p>Status: <span id="displayStatusText"></span></p>
+        </div>
+
+         <div class="infos">
+            <p>Nome:<span id="viewPersonName"></span></p>
+            <p>Idade:<span id="viewPersonAge"></span></p>
+        </div>
+
+        <div id = "perfil" class="perfil">
+            <p>Perfil</p>
+        </div>
+
+    </div>
+
+
+
+    <!-- ÁREA DO MAPA (O CAMPO) -->
+    <div id="canvas-container">
+        <div id="visual-plane"></div> <!--dentro do mapa a gente tem uma caixa invisivel que trara os perfis depois-->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

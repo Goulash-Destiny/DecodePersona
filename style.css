@@ -1,0 +1,275 @@
+/* RESET E ESTILO GLOBAL */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: sans-serif; 
+}
+body { 
+    background-color: #0F0F12; 
+    color: #e1e1e6; 
+    overflow: hidden; 
+    height: 100vh; 
+}
+
+/* O MAPA / CAMPO */
+#canvas-container { 
+    width: 100vw; 
+    height: 100vh; 
+    position: relative; 
+    background-color: #0F0F12; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+#visual-plane { 
+    display: flex; 
+    gap: 60px; 
+    justify-content: center; 
+    align-items: center; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+}
+#visual-plane:active { cursor: grabbing; }
+
+/* ELEMENTOS DO GRUPO */
+.grupo-container { display: flex; flex-direction: column; align-items: center; position: relative; }
+.titulo-circulo { font-size: 14px; color: rgba(166, 160, 223, 0.53); margin-bottom: 5px; letter-spacing: 1px; }
+
+.circulo-social { 
+    width: 120px; 
+    height: 120px; 
+    border: 1px solid #2A2A38; 
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.6);
+    border-radius: 50%; 
+    position: relative; 
+    background: rgba(26, 26, 36, 1); 
+    display: block; /* Alterado para block para os bonecos respeitarem o top e left absolutos */
+}
+
+
+/* BOTÕES DE "+" */
+.top-right-btn { position: fixed; top: 20px; right: 20px; width: 45px; height: 45px; border-radius: 50%; border: 1px solid #00b37e; background: #202024; color: #00b37e; font-size: 24px; font-weight: bold; cursor: pointer; z-index: 100; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
+.btn-add-no-circulo { background: transparent; border: 1px solid #22ec3d; color: #22ec3d; width: 20px; height: 20px; border-radius: 50%; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; }
+.top-right-btn:hover, .btn-add-no-circulo:hover { background: #22ec3d; color: white; }
+
+/* PERFIL / BONECOS */
+.perfil-usuario { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+.boneco { 
+    width: 45px; 
+    height: 45px; 
+    border-radius: 50%; 
+    border: 1px solid #323238; 
+    background-color: #202024; 
+    position: relative; 
+    overflow: hidden; /* O PULO DO GATO: Corta a bandeira no formato redondo do círculo */
+}
+
+.bandeira {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14px; /* Aumentei um pouco o tamanho para preencher bem o canto do círculo */
+    height: 14px;
+    border-radius: 20%;
+    z-index: 5;
+    /* Removemos a borda para o corte do círculo ficar perfeito */
+    border: none; 
+}
+
+.nome-pessoa { font-size: 13px; color: #e1e1e6; }
+
+/* Tela preta */
+.popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 200; }
+
+/* 1. caixa pequena para add o nome do circulo*/
+.popup-box { background: #202024; padding: 25px; border-radius: 8px; border: 1px solid #323238; width: 320px; display: flex; flex-direction: column; gap: 15px; }
+
+/* 2. SUBTELA GRANDE (PERFIL) */
+.modal-big-box { background: #16171d; border: 1px solid #222226; border-radius: 12px; width: 90%; max-width: 800px;max-height: 80vh; padding: 35px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+.modal-subtitle { color: #71748a; font-size: 14px; margin-top: -10px; }
+.modal-body { flex:1;  display: flex; flex-direction: column; gap: 20px;overflow-y: auto; margin-top: 10px; max-height: 400px; overflow-y: auto; padding-right: 10px; }
+.modal-footer { display: flex; justify-content: space-between;  margin-top: 20px; border-top: 1px solid #222226; padding-top: 20px; }
+
+.modal-col {
+    flex: 1;                  /* Distribui o tamanho igualmente entre as duas colunas */
+    min-width: 280px;         /* Evita que as colunas fiquem espremidas demais */
+}
+/* 4. DESIGN MODERNO PARA A BARRA DE ROLAGEM (OPCIONAL) */
+.modal-body::-webkit-scrollbar {
+    width: 8px;               /* Largura da barrinha */
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #E0E0E0;/* Cor neutra do fundo da barra (cinza-claro) */
+    border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background-color: #00b37e;/* Muda para o seu verde vibrante ao passar o mouse */
+}
+
+/* FORMULÁRIOS INTERNOS */
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-group label { font-size: 13px; color: #a8a8b3; font-weight: bold; }
+input[type="text"] { padding: 12px; background: #0d0e12; border: 1px solid #323238; border-radius: 6px; color: white; font-size: 14px; width: 100%; }
+input[type="text"]:focus { border-color: #00b37e; outline: none; }
+input[type="color"] { width: 60px; height: 40px; border: 1px solid #323238; background: none; cursor: pointer; border-radius: 4px; }
+textarea { padding: 12px; background: #0d0e12; border: 1px dashed #222226; border-radius: 6px; color: #565869; height: 100px; resize: none; }
+
+/* BOTÕES DOS POPUPS */
+.popup-buttons { display: flex; justify-content: flex-end; gap: 10px; } 
+.btn-confirm { padding: 12px 24px; background: #00b37e; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+.btn-cancel { padding: 12px 24px; background: #202127; color: #a8a8b3; border: none; border-radius: 6px; cursor: pointer; }
+.btn-confirm:hover { background: #00875f; }
+.btn-cancel:hover { background: #2d2e38; }
+
+/* ESTILO DAS 3 OPÇÕES DE CLASSIFICAÇÃO */
+.radio-group {
+    display: flex;
+    flex-direction: row; /* Mudado de column para row (linha) */
+    gap: 20px;           /* Aumentei um pouco o espaço entre elas para não ficar espremido */
+    margin-top: 5px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #e1e1e6;
+}
+
+/* Esconde a bolinha padrão do navegador */
+.radio-option input[type="radio"] {
+    display: none;
+}
+
+/* Cria a nossa própria bolinha estilizada */
+.custom-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #323238;
+    position: relative;
+    display: inline-block;
+}
+
+/* Cores das bordas para identificar no cadastro */
+.green-dots { border: 1px solid #00b37e; }
+.orange-dots { border: 1px solid #ff9000; }
+.red-dots { border: 1px solid #ff0000; }
+.grey-dots { border: 1px solid #f5f5f5;}
+
+/* O efeito de "marcado/selecionado" preenchendo o centro */
+.radio-option input[type="radio"]:checked + .green-dots { background: #22ec3d; }
+.radio-option input[type="radio"]:checked + .orange-dots { background: #ff9000; }
+.radio-option input[type="radio"]:checked + .red-dots { background: #ff0000; }
+.radio-option input[type="radio"]:checked + .grey-dots { background: #f5f5f5; }
+
+.radio-label {
+    font-weight: 500;
+}
+
+select {
+    padding: 12px;
+    background: #0d0e12;
+    border: 1px solid #323238;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    width: 100%;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: #00b37e;
+    outline: none;
+}
+
+/* Força as opções de cores a ficarem lado a lado (horizontal) */
+.horizontal-row {
+    display: flex;
+    flex-direction: row !important;
+    gap: 15px;
+    flex-wrap: wrap; /* Evita quebrar em telas menores */
+}
+
+/* Posiciona o botão de deletar abaixo do botão de mais */
+.btn-delete-all {
+    top: 75px !important; /* Desce o botão para não encavalar no de cima */
+    border-color: #ff0000 !important;
+    color: #ff0000 !important;
+}
+
+.btn-delete-all:hover {
+    background: #ff0000 !important;
+    color: white !important;
+}
+
+#personView{
+    position: fixed;
+    bottom: 0;
+    left:0;
+
+    width: 100vw;
+    height: 50vh;
+
+    /* Visual do painel */
+
+    
+    /* Garante que fique na frente dos círculos */
+    z-index: 999;
+    
+    /* Alinhamento interno */
+    display: flex; /* O JavaScript alterna entre 'none' e 'flex' */
+}
+
+.infos {
+    display:flex;
+    background: #000000;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 80%;
+    height:71%;
+    padding: 55px;
+
+    color: #ffffff;
+
+    flex-direction: column;
+}
+
+.amigavel {
+    display: flex;
+    background-color: #000000;
+    left: 0;
+    top: 0;
+    width: 40%;
+    height: 29%;
+    padding: 30px;
+
+    justify-content: center;
+    align-items: center;
+
+
+    border: 1px solid #22ec3d;
+    border-radius: 2%;
+    color: #22ec3d;
+}
+
+.perfil {
+    position: absolute;
+    display: flex;
+    background-color: #000000;
+    left: 0;
+    bottom: 0;
+    width: 20%;
+    height: 71%;
+
+}
