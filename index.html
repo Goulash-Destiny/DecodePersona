@@ -15,6 +15,21 @@
     <!-- NOVO BOTÃO TEMPORÁRIO PARA DELETAR TUDO (Adicione esta linha aqui) -->
     <button id="clearAllBtn" class="top-right-btn btn-delete-all" title="Limpar Todos os Círculos">🗑️</button>
 
+    <!-- MENU LATERAL-->
+
+    <button id="btn-menuLateral" class= "btn-menuLateral">☰</button>
+
+    <aside class="menu-lateral" id="menuLateral">
+        <!-- Botão para fechar o menu -->
+        <button class="btn-fechar" id="btnFechar">&times;</button>
+        
+        <nav class="links-menu">
+        <button onclick="resetCamera()">Reset Camera</button>
+        <button onclick="minhaFuncao2()">Minha Ação 2</button>
+        <button onclick="minhaFuncao3()">Minha Ação 3</button>
+        </nav>
+    </aside>
+
 
     <!-- 1.NOME DO CÍRCULO -->
     <div id="circlePopup" class="popup-overlay"> <!-- essa div e um quadrado preto que cobre toda a tela (quando clica no botao) -->

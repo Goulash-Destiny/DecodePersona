@@ -20,6 +20,11 @@ const cancelCircleBtn = document.getElementById('cancelCircleBtn'); //botão can
 const confirmCircleBtn = document.getElementById('confirmCircleBtn'); //botão cancelar
 const viewPerson = document.getElementById('personView');
 
+//Botão menu lateral
+const menuLateral = document.getElementById('menuLateral');
+const btnAbrir = document.getElementById('btn-menuLateral');
+const btnFechar = document.getElementById('btnFechar');
+
 
 // ELEMENTOS DA SUBTELA GRANDE DE CADA PERFIL
 const personModal = document.getElementById('personModal'); //pág de cadastro
@@ -155,7 +160,38 @@ confirmCircleBtn.addEventListener('click', () => {
     circlePopup.style.display = 'none'; //fecha o popup
     newCircleNameInput.value = ""; //limpa o input
 });
+// ==================== MENU LATERAL================================
+btnAbrir.addEventListener('click', () => {
+    menuLateral.classList.add('aberto');//aqui que aciona o deslize para o lado
+});
 
+// Fecha o menu lateral ao clicar no botão "X"
+btnFechar.addEventListener('click', () => {
+    menuLateral.classList.remove('aberto');
+});
+
+// Funções de ação para os botões internos do menu
+// Substitua os alertas pelas ações reais do seu projeto
+function resetCamera() {
+
+    deslocamentoX = 0; //zera todo o deslocamento que tive
+    deslocamentoY = 0;
+
+    visualPlane.style.transform = `translate(calc(-50% + ${deslocamentoX}px), calc(-50% + ${deslocamentoY}px))`;
+//-50% o navegador vai para o meio dele, e soma com deslocamento = 0
+    
+    menuLateral.classList.remove('aberto');
+}
+
+function minhaFuncao2() {
+    alert("Você clicou na Ação 2!");
+    menuLateral.classList.remove('aberto');
+}
+
+function minhaFuncao3() {
+    alert("Você clicou na Ação 3!");
+    menuLateral.classList.remove('aberto');
+}
 // ==================== LÓGICA DA SUBTELA GRANDE DE PERFIL ====================
 
 backPersonBtn.addEventListener('click', () => { //botao voltar
