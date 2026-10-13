@@ -107,8 +107,8 @@ confirmCircleBtn.addEventListener('click', () => {
 
     // LÓGICA DE COLMEIA
     const index = dadosDoSistema.length; // Descobre o indice do circulo dentro da array
-    const raioCamada = 160; // O espaçamento horizontal ideal entre os centros dos círculos
-    const alturaCamada = 140; // O espaçamento vertical 
+    const raioCamada = 560; // O espaçamento horizontal ideal entre os centros dos círculos
+    const alturaCamada = 500; // O espaçamento vertical 
     
 
     // Divide os círculos em fileiras de 3 para irem se espalhando ao redor do centro
@@ -123,8 +123,8 @@ confirmCircleBtn.addEventListener('click', () => {
         nome: nomeCirculo,
         pessoas: [],
         // Define a posição exata na colmeia para não encavalar
-        posX: (coluna * raioCamada) + deslocamentoHorizontal - raioCamada, 
-        posY: (linha * alturaCamada) - alturaCamada
+        posX: (coluna * raioCamada) + deslocamentoHorizontal, 
+        posY: (linha * alturaCamada) 
     };
 
     // Criando a ação do clique do botão de adicionar perfil (Mantenha o seu evento do btnMaisNoTopo igual!)
@@ -140,6 +140,8 @@ confirmCircleBtn.addEventListener('click', () => {
     divGrupo.style.position = 'absolute';
     divGrupo.style.left = `calc(50% + ${novoCirculo.posX}px)`;
     divGrupo.style.top = `calc(50% + ${novoCirculo.posY}px)`;
+
+    divGrupo.style.transform = 'translate(-50%, -50%)'
 
 
     dadosDoSistema.push(novoCirculo); //ponhe o circulo que acabei de criar dentro de uma array
@@ -337,8 +339,17 @@ addPersonBtn.addEventListener('click', () => { //botao salvar
     // Procura o círculo ativo no banco de dados e injeta a pessoa lá dentro
     const circuloAlvo = dadosDoSistema.find(c => c.id === idDoCirculoAtivo); //percorre todos os circulos na array até achar o ativo (idcirculoativo)
     if (circuloAlvo) { //se achar o circulo
+
+        // ==================== TRAVA DE TETO MÁXIMO CORRIGIDA ====================
+        // Checa se já tem 15 pessoas ANTES de permitir o push
+        if (circuloAlvo.pessoas.length >= 15) {
+            alert(`O círculo "${circuloAlvo.nome}" já atingiu o limite máximo de 15 perfis!`);
+            return; // Interrompe o processo imediatamente e não deixa cadastrar
+        }
+        // ===================================
         circuloAlvo.pessoas.push(novaPessoa); //insere o objeto (nova pessoa) na array, ele contem a cor e o nome
     }
+    
 
     // Salva a lista inteira atualizada no navegador
     localStorage.setItem('decodePersonaData', JSON.stringify(dadosDoSistema)); //atualização da array
@@ -388,6 +399,12 @@ let arrastando = false; //a variavel comeca como falso
 let inicioX, inicioY; // uma variavel vazia
 let deslocamentoX = 0; //atribui o valor 0 como ponto de partida pq ainda nao houve interacao com a tela
 let deslocamentoY = 0;
+let escala = 1; // 1 significa 100% (tamanho normal). 
+
+
+function atualizarPosicaoEMapa() {
+    visualPlane.style.transform = `translate(calc(-50% + ${deslocamentoX}px), calc(-50% + ${deslocamentoY}px)) scale(${escala})`;
+}
 
 canvasContainer.addEventListener('mousedown', (e) => { //quando o mouse e pressionado
     if (e.target === canvasContainer || e.target === visualPlane) { //e.target = alvo do clique
@@ -401,7 +418,7 @@ window.addEventListener('mousemove', (e) => {
     if (!arrastando) return;
     deslocamentoX = e.clientX - inicioX;
     deslocamentoY = e.clientY - inicioY;
-    visualPlane.style.transform = `translate(calc(-50% + ${deslocamentoX}px), calc(-50% + ${deslocamentoY}px))`;
+    atualizarPosicaoEMapa(); // Chama a função que une movimento e zoom
 });
 
 window.addEventListener('mouseup', () => {
@@ -425,8 +442,18 @@ window.addEventListener('keydown', (e) => {
         deslocamentoX -= velocidade; // Move para direita
     }
 
+     // === CONTROLE DE ZOOM (TECLAS + E -) ===
+    if (e.key === '+' || e.key === '=') {
+        escala += 0.05; // Aumenta o zoom de 5% em 5%
+    } else if (e.key === '-' || e.key === '_') {
+        escala -= 0.05; // Diminui o zoom de 5% em 5%
+    }
+
+    // Trava o zoom para não sumir da tela (mínimo 20% e máximo 200%)
+    escala = Math.max(0.2, Math.min(2, escala));
+
     // Aplica o movimento fisicamente no campo usando os mesmos cálculos do mouse
-    visualPlane.style.transform = `translate(calc(-50% + ${deslocamentoX}px), calc(-50% + ${deslocamentoY}px))`;
+    atualizarPosicaoEMapa(); // Aplica fisicamente no mapa
 });
 
 
@@ -441,6 +468,7 @@ function carregarDadosSalvos() {
         divGrupo.style.position = 'absolute';
         divGrupo.style.left = `calc(50% + ${circulo.posX || 0}px)`;
         divGrupo.style.top = `calc(50% + ${circulo.posY || 0}px)`;
+        divGrupo.style.transform = 'translate(-50%, -50%)'
 
         const titulo = document.createElement('span'); //tag é para textos
         titulo.className = 'titulo-circulo';

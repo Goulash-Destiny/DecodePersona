@@ -40,14 +40,24 @@ body {
 .titulo-circulo { font-size: 14px; color: rgba(166, 160, 223, 0.53); margin-bottom: 5px; letter-spacing: 1px; }
 
 .circulo-social { 
-    width: 120px; 
-    height: 120px; 
+    width: 500px; 
+    height: 500px; 
     border: 1px solid #2A2A38; 
     box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.6);
     border-radius: 50%; 
     position: relative; 
     background: rgba(26, 26, 36, 1); 
-    display: block; /* Alterado para block para os bonecos respeitarem o top e left absolutos */
+
+        
+    /* === A MÁGICA PARA DISTRIBUIR OS BONECOS FICA AQUI === */
+    display: grid;
+    /* Divide o espaço em 4 colunas automáticas (perfeito para caber até 15-16 bonecos) */
+    grid-template-columns: repeat(4, auto); 
+    gap: 20px;               /* Distância segura e elegante entre um boneco e outro */
+    justify-content: center; /* Centraliza o bloco de bonecos na horizontal */
+    align-content: center;   /* Centraliza o bloco de bonecos na vertical */
+    padding: 50px;           /* Parede invisível de 50px para ninguém tocar na borda redonda */
+    box-sizing: border-box;  /* Garante que o padding não mude o tamanho de 500px */
 }
 
 
