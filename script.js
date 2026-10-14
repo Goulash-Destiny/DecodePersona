@@ -228,10 +228,16 @@ addPersonBtn.addEventListener('click', () => { //botao salvar
     const radioMarcado = document.querySelector('input[name="statusColor"]:checked'); // pega os inputs que fazem parte das 3 cores, checked so pega o selecionado na checkbox
     const corEscolhida = radioMarcado ? radioMarcado.value : "#22ec3d"; //se o usuario marcou, use a cor, senão (:) use essa > verde
 
+
     if (nomePessoa === "") { // se o nome da pessoa for igual a vazio
         alert("Digite o nome da pessoa para salvar."); //alerta do navegador
         return; //para o processo
     }
+
+
+
+
+
 
     const radioPerfilMarcado = document.querySelector('input[name="statusPerfilDuplo"]:checked');
     const perfilDuploEscolhido = radioPerfilMarcado ? radioPerfilMarcado.value : "Sim";
@@ -260,46 +266,8 @@ addPersonBtn.addEventListener('click', () => { //botao salvar
     const dependenciaPessoa = personDependenciaInput.value.trim();
     const segredoPessoa = personSegredoInput.value.trim();
     const obsessaoPessoa = personObsessaoInput.value.trim();
-    
-    
 
-
-
-    // Cria a estrutura visual do perfil
-    const divPerfil = document.createElement('div'); //cria uma div na memoria 
-    divPerfil.className = 'perfil-usuario'; // ponhe um estilo
-    divPerfil.style.cursor = 'pointer'; // Faz o mouse virar dedinho para clicar
-
-    const boneco = document.createElement('div'); //cria uma div
-    boneco.className = 'boneco'; //ponhe um estilo
-
-    const bandeira = document.createElement('div'); //cria uma div
-    bandeira.className = 'bandeira'; //ponhe um estilo
-    bandeira.style.backgroundColor = corEscolhida; // atribui a cor da variavel a bandeira
-    bandeira.style.borderRadius = "20%"; // Seu toque de estilo!
-    
-    // Coloca a bandeira dentro do boneco
-    boneco.appendChild(bandeira); 
-
-    const nomeSpan = document.createElement('span'); //cria um espaco para texto na memoria
-    nomeSpan.className = 'nome-persona';  // add o estilo css variavel de espaco
-    nomeSpan.textContent = nomePessoa; // add o texto na variavel de espaco
-
-    divPerfil.addEventListener('click', (ev) => {
-    viewPerson.style.display = 'flex';
-    ev.stopPropagation(); // 🧙‍♂️ Impede que o clique interfira ou suma com os círculos da tela
-    document.getElementById("viewPersonName").innerText = novaPessoa.nome;
-    document.getElementById("viewPersonAge").innerText = novaPessoa.idade || "Não informada";
-    viewPerson.style.display = 'flex'; 
-});
-
-
-    divPerfil.appendChild(boneco); //guarda o boneco na variavel divPerfil
-    divPerfil.appendChild(nomeSpan); //ponhe o nome do perfil na varivael de memoria
-
-
-
-    // CRIA O OBJETO PESSOA NA MEMÓRIA (Salva apenas nome e cor que já funcionam)
+        // CRIA O OBJETO PESSOA NA MEMÓRIA (Salva apenas nome e cor que já funcionam)
     const novaPessoa = { //OBJETO
         id: Date.now(),
         nome: nomePessoa, //nome
@@ -330,6 +298,51 @@ addPersonBtn.addEventListener('click', () => { //botao salvar
         Obsessão: obsessaoPessoa,
     };
 
+      
+    // Cria a estrutura visual do perfil
+    const divPerfil = document.createElement('div'); //cria uma div na memoria 
+    divPerfil.className = 'perfil-usuario'; // ponhe um estilo
+    divPerfil.style.cursor = 'pointer'; // Faz o mouse virar dedinho para clica
+
+    const boneco = document.createElement('div'); //cria uma div
+    boneco.className = 'boneco'; //ponhe um estilo
+
+    const bandeira = document.createElement('div'); //cria uma div
+    bandeira.className = 'bandeira'; //ponhe um estilo
+    bandeira.style.backgroundColor = corEscolhida; // atribui a cor da variavel a bandeira
+    bandeira.style.borderRadius = "20%"; // Seu toque de estilo!
+    
+    // Coloca a bandeira dentro do boneco
+    boneco.appendChild(bandeira); 
+
+    const nomeSpan = document.createElement('span'); //cria um espaco para texto na memoria
+    nomeSpan.className = 'nome-pessoa';  // add o estilo css variavel de espaco
+    nomeSpan.textContent = nomePessoa; // add o texto na variavel de espaco
+
+
+//CHAMANDO OS DADOS PARA A TELA HALFINFO
+
+divPerfil.addEventListener('click', (ev) => {
+    ev.stopPropagation();
+    // Chame a função passando o objeto que você acabou de criar e a cor dele
+    abrirHalfInfo(novaPessoa, corEscolhida); 
+});
+
+//===================================
+
+    divPerfil.appendChild(nomeSpan); //ponhe o nome do perfil na varivael de memoria
+    divPerfil.appendChild(boneco); //guarda o boneco na variavel divPerfil
+
+//FECHANDO HALFINFO==================
+ 
+    //FECHANDO O HALF INFO
+    document.getElementById("sairHalfInfo").addEventListener("click", (ev) => {
+    ev.stopPropagation(); // Impede que o clique cause outros comportamentos
+    document.getElementById("personView").style.display = "none";
+})
+
+
+
     const radioColorVerde = document.querySelector('input[name="statusColor"][value="#22ec3d"]');
     if (radioColorVerde) radioColorVerde.checked = true;
 
@@ -340,13 +353,6 @@ addPersonBtn.addEventListener('click', () => { //botao salvar
     const circuloAlvo = dadosDoSistema.find(c => c.id === idDoCirculoAtivo); //percorre todos os circulos na array até achar o ativo (idcirculoativo)
     if (circuloAlvo) { //se achar o circulo
 
-        // ==================== TRAVA DE TETO MÁXIMO CORRIGIDA ====================
-        // Checa se já tem 15 pessoas ANTES de permitir o push
-        if (circuloAlvo.pessoas.length >= 15) {
-            alert(`O círculo "${circuloAlvo.nome}" já atingiu o limite máximo de 15 perfis!`);
-            return; // Interrompe o processo imediatamente e não deixa cadastrar
-        }
-        // ===================================
         circuloAlvo.pessoas.push(novaPessoa); //insere o objeto (nova pessoa) na array, ele contem a cor e o nome
     }
     
@@ -392,6 +398,41 @@ addPersonBtn.addEventListener('click', () => { //botao salvar
 
 
 }); // FECHA O BOTÃO SALVAR COMPLETO
+
+
+// 🌟 FUNÇÃO GLOBAL E ISOLADA (Fica fora de todos os botões e loops)
+function abrirHalfInfo(pessoa, corDaBandeira) {
+    // 1. Preenche o Nome e a Idade direto usando o objeto que veio do LocalStorage ou do salvar
+    document.getElementById("viewPersonName").innerText = pessoa.nome || "Não informado";
+    document.getElementById("viewPersonAge").innerText = pessoa.idade || "Não informada";
+
+    const containerAmigavel = document.getElementById("amigavel");
+    const textoStatus = document.getElementById("displayStatusText");
+
+    let nomeStatus = "Desconhecido";
+    let corFinal = corDaBandeira;
+
+    // 2. Faz a checagem das cores (Aceita o formato RGB do F5 e o Hexadecimal do salvar)
+    if (corDaBandeira.includes('rgb(34, 236, 61)') || corDaBandeira.includes('22ec3d')) {
+        nomeStatus = "AMIGÁVEL";
+        corFinal = "#22ec3d"; 
+    } else if (corDaBandeira.includes('rgb(255, 144, 0)') || corDaBandeira.includes('ff9000')) {
+        nomeStatus = "HOSTIL";
+        corFinal = "#ff9000"; 
+    } else if (corDaBandeira.includes('rgb(255, 0, 0)') || corDaBandeira.includes('ff0000')) {
+        nomeStatus = "ATENÇÃO";
+        corFinal = "#ff0000"; 
+    }
+
+    // 3. Aplica as propriedades de texto e cor na tela
+    textoStatus.innerText = nomeStatus;
+    containerAmigavel.style.borderColor = corFinal; 
+    containerAmigavel.style.color = corFinal;       
+
+    // 4. Mostra o painel lateral na tela
+    document.getElementById('personView').style.display = 'flex';
+}
+
 
 
 // ==================== CONTROLE DE MOVIMENTO DO CAMPO ====================
@@ -504,25 +545,29 @@ function carregarDadosSalvos() {
             bandeira.style.borderRadius = "20%"; 
 
             const nomeSpan = document.createElement('span'); //tag é para string
-            nomeSpan.className = 'nome-persona'; //estilo
+            nomeSpan.className = 'nome-pessoa'; //estilo
             nomeSpan.textContent = pessoa.nome; // pega o nome da pessoa e ponhe na tag
 
-            divPerfil.addEventListener('click', (ev) => {
-            ev.stopPropagation(); // Impede de sumir com os círculos da tela
-            
-        
-        // Injeta o nome no seu span e mostra a barra de 30% embaixo
-            document.getElementById("viewPersonName").innerText = pessoa.nome;
-            document.getElementById("viewPersonAge").innerText = pessoa.idade || "Não informada";
-            viewPerson.style.display = 'flex'; 
-            });
-
-
             boneco.appendChild(bandeira); //ponhe a bandeira no boneco
-            divPerfil.appendChild(boneco); //ponhe o boneco na div perfil
             divPerfil.appendChild(nomeSpan); //ponhe o nome também
+            divPerfil.appendChild(boneco); //ponhe o boneco na div perfil
             divCirculo.appendChild(divPerfil);// ponhe o perfil (boneco+nome) no circulo
+
+            divPerfil.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              // Supondo que seu loop use a variável 'pessoa' para cada usuário do banco:
+              abrirHalfInfo(pessoa, pessoa.cor); 
+             });
+
+
         });
+
+        // ❌ FAZ O BOTÃO "X" FECHAR O HALFINFO (Escopo Global)
+        document.getElementById("sairHalfInfo").addEventListener("click", (ev) => {
+        ev.stopPropagation(); // 🧙‍♂️ Impede que o clique interfira com o resto da tela
+        document.getElementById("personView").style.display = "none"; // Esconde o painel
+        });
+
 
         
         // 2. SEGUNDA CORREÇÃO: Encaixa as constantes do grupo na ordem certa de cima para baixo

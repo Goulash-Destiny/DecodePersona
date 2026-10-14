@@ -69,29 +69,56 @@ body {
 /* PERFIL / BONECOS */
 .perfil-usuario { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 
-.boneco { 
-    width: 45px; 
-    height: 45px; 
-    border-radius: 50%; 
-    border: 1px solid #323238; 
-    background-color: #202024; 
-    position: relative; 
-    overflow: hidden; /* O PULO DO GATO: Corta a bandeira no formato redondo do círculo */
+.boneco {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 1px solid #323238;
+  background-color: #202024;
+  position: relative;
+  overflow: hidden; /* Corta tudo no formato redondo do círculo */
+  
+  /* Centraliza os elementos que vamos desenhar abaixo */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end; /* Empurra o desenho para a base */
 }
 
+/* DESENHANDO A CABEÇA DO BONECO (CSS PURO) */
+.boneco::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background-color: #ffffff; /* Cor branca */
+  border-radius: 50%;
+  margin-bottom: 2px; /* Espaço entre a cabeça e o corpo */
+  display: block;
+}
+
+/* DESENHANDO O CORPO/OMBRO DO BONECO (CSS PURO) */
+.boneco::after {
+  content: "";
+  width: 28px;
+  height: 16px;
+  background-color: #ffffff; /* Cor branca */
+  border-radius: 14px 14px 0 0; /* Arredonda apenas os ombros */
+  display: block;
+}
+
+/* A BANDEIRA (Ajustada para não tapar o boneco) */
 .bandeira {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 14px; /* Aumentei um pouco o tamanho para preencher bem o canto do círculo */
-    height: 14px;
-    border-radius: 20%;
-    z-index: 5;
-    /* Removemos a borda para o corte do círculo ficar perfeito */
-    border: none; 
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px; 
+  height: 12px;
+  border-radius: 20%;
+  z-index: 5; /* Garante que ela fique por cima do fundo, mas sem tampar o centro */
+  border: none;
 }
 
-.nome-pessoa { font-size: 13px; color: #e1e1e6; }
+.nome-pessoa { font-size: 11px; color: rgba(rgba(255, 255, 255, 0.781)); }
 
 /* Tela preta */
 .popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.75); display: none; justify-content: center; align-items: center; z-index: 200; }
@@ -241,19 +268,37 @@ select:focus {
 }
 
 .infos {
-    display:flex;
+    display: flex;
     background: #000000;
     position: absolute;
     bottom: 0;
     right: 0;
     width: 80%;
-    height:71%;
+    height: 71%;
     padding: 55px;
-
     color: #ffffff;
-
+    
+    /* 🌟 O ALINHAMENTO ACONTECE AQUI: */
     flex-direction: column;
+    justify-content: center; /* Centraliza o bloco de texto verticalmente no espaço */
+    align-items: flex-start; /* Garante que os textos fiquem alinhados à esquerda */
+    gap: 15px;               /* Cria uma distância perfeita e padrão entre a linha do Nome e da Idade */
 }
+
+/* Ajuste fino para desgrudar o título do valor real */
+.infos p {
+    margin: 0;               /* Remove margens padrão do navegador que desalinhavam o bloco */
+    font-size: 16px;         /* Define um tamanho de fonte padrão legível */
+    display: flex;
+    gap: 8px;                /* Cria um espaço fixo entre a palavra "Nome:" e o nome real da pessoa */
+}
+
+/* Estilo opcional para destacar os dados inseridos pelo JavaScript */
+.infos p span {
+    font-weight: bold;       /* Deixa o Nome e a Idade em negrito para destacar das etiquetas */
+    color: #e1e1e6;          /* Uma cor levemente mais clara para o conteúdo */
+}
+
 
 .amigavel {
     display: flex;
@@ -267,10 +312,10 @@ select:focus {
     justify-content: center;
     align-items: center;
 
-
-    border: 1px solid #22ec3d;
+    border: 1px solid currentColor; 
     border-radius: 2%;
-    color: #22ec3d;
+
+    font-size: 23px;
 }
 
 .perfil {
@@ -337,6 +382,23 @@ select:focus {
 .menu-lateral.aberto {
     transform: translateX(0);
     box-shadow: 10px 0px 40px rgba(0, 0, 0, 0.6); /* Sombra só aparece quando o menu abre */
+}
+
+/* ESTILO DO BOTÃO DE FECHAR */
+.btn-fecharHalf {
+    position: absolute;
+    top: 15px;       /* Distância do topo */
+    right: 15px;     /* Distância da direita */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    color: #888888;
+    transition: color 0.2s;
+}
+
+/* Efeito visual simples quando passar o mouse por cima */
+.btn-fecharHalf:hover {
+    color: #ffffff; /* O X brilha em branco ao passar o mouse */
 }
 
 /* Botão de Fechar (X) */
