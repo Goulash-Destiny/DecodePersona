@@ -25,6 +25,10 @@ const menuLateral = document.getElementById('menuLateral');
 const btnAbrir = document.getElementById('btn-menuLateral');
 const btnFechar = document.getElementById('btnFechar');
 
+const btnPersonalidade = document.getElementById('personalidade');
+const abaPersonalidade = document.getElementById('abaPersonalidade');
+const btnFecharAba = document.getElementById('fecharAbaPersonalidade');
+
 
 // ELEMENTOS DA SUBTELA GRANDE DE CADA PERFIL
 const personModal = document.getElementById('personModal'); //pág de cadastro
@@ -496,6 +500,18 @@ window.addEventListener('keydown', (e) => {
     // Aplica o movimento fisicamente no campo usando os mesmos cálculos do mouse
     atualizarPosicaoEMapa(); // Aplica fisicamente no mapa
 });
+
+// ====================          FUNÇÃO PERSONALIDADE          ====================
+// Abre a aba ao clicar no botão [P]
+btnPersonalidade.addEventListener('click', () => {
+    abaPersonalidade.classList.add('visivel');
+});
+
+// Fecha a aba ao clicar no X
+btnFecharAba.addEventListener('click', () => {
+    abaPersonalidade.classList.remove('visivel');
+});
+
 
 
 
